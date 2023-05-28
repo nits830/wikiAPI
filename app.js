@@ -27,27 +27,24 @@ const Article = mongoose.model("Article", articleSchema);
 
 
 
-app.get("/articles", async (req,res)=> {
 
-    const articles = await Article.find({});
-    res.send({status:"ok", data:articles});
-    
+
+app.route("/articles")
+  .get(async (req,res)=> {
+        const articles = await Article.find({});
+        res.send({status:"ok", data:articles});
 })
-
-app.post('/articles', (req, res)=>{
-  
-  const newArticle = new Article({
-    title:req.body.title,
-    content:req.body.content
-  });
-  newArticle.save();
-  res.redirect("/articles");
-  
-});
-
-app.delete("/articles", async (req, res)=>{
-  await Article.deleteMany({});
-  res.redirect("/articles");
-});
+  .post((req, res)=>{
+        const newArticle = new Article({
+        title:req.body.title,
+        content:req.body.content
+        });
+        newArticle.save();
+        res.redirect("/articles"); 
+    })
+  .delete(async (req, res)=>{
+    await Article.deleteMany({});
+    res.redirect("/articles");
+    })
 
 app.listen(3000, console.log("Server started"));
