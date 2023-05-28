@@ -70,6 +70,24 @@ app.route("/articles/:articleTitle")
       );
        res.redirect("/articles");
     })
+    .patch(async (req, res)=>{
+      await Article.updateOne(
+        {title:req.params.articleTitle},
+        {$set:req.body},
+        
+
+      )
+      res.redirect("/articles");
+    })
+    .delete(async (req, res)=>{
+      await Article.deleteOne(
+        {title:req.params.articleTitle}
+        );
+      res.redirect("/articles");
+    }
+     
+    )
+    
 
 
 
