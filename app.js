@@ -28,6 +28,7 @@ const Article = mongoose.model("Article", articleSchema);
 
 
 
+// Route for all articles
 
 app.route("/articles")
   .get(async (req,res)=> {
@@ -45,6 +46,31 @@ app.route("/articles")
   .delete(async (req, res)=>{
     await Article.deleteMany({});
     res.redirect("/articles");
+    });
+  
+
+// Route for a particular article
+app.route("/articles/:articleTitle")
+    .get(async (req, res)=>{
+      const specifiedArticle = await Article.findOne({title:req.params.articleTitle});
+      if(specifiedArticle){
+        res.send(specifiedArticle);
+      }
+      else{
+        res.send("No Article found");
+      }
     })
+    .put(async (req, res)=>{
+        
+        await Article.updateOne(
+        {title:req.params.articleTitle},
+        {title:req.body.title, content:req.body.content},
+        
+        
+      );
+       res.redirect("/articles");
+    })
+
+
 
 app.listen(3000, console.log("Server started"));
